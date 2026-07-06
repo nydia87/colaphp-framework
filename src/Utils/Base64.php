@@ -1,4 +1,8 @@
 <?php
+/**
+ * @author: nydia87 <349196713@qq.com>
+ * @description:
+ */
 
 namespace ColaPHP\Framework\Utils;
 

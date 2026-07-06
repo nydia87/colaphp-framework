@@ -1,4 +1,8 @@
 <?php
+/**
+ * @author: nydia87 <349196713@qq.com>
+ * @description:
+ */
 
 namespace ColaPHP\Framework\Driver\Log;
 
@@ -40,7 +44,7 @@ class File
 				$info[$type][] = $this->config['json'] ? $msg : '[ ' . $type . ' ] ' . $msg;
 			}
 
-			if (! $this->config['json'] &&  in_array($type, $this->config['apart_level'] )) {
+			if (! $this->config['json'] && in_array($type, $this->config['apart_level'])) {
 				// 独立记录的日志级别
 				$filename = $this->getApartLevelFile($path, $type);
 
@@ -67,7 +71,7 @@ class File
 
 		foreach ($message as $type => $msg) {
 			$msg = is_array($msg) ? implode("\r\n", $msg) : $msg;
-			if ( IS_CLI ) {
+			if (IS_CLI) {
 				$info['msg'] = $msg;
 				$info['type'] = $type;
 			} else {
@@ -75,7 +79,7 @@ class File
 			}
 		}
 
-		if ( IS_CLI ) {
+		if (IS_CLI) {
 			$message = $this->parseCliLog($info);
 		} else {
 			$message = $this->parseLog($info);

@@ -1,4 +1,8 @@
 <?php
+/**
+ * @author: nydia87 <349196713@qq.com>
+ * @description:
+ */
 
 namespace ColaPHP\Framework\Core\Lite;
 
@@ -27,9 +31,10 @@ abstract class Controller
 		$this->requestObj = new Request();
 		// 视图
 		$this->view = new View();
-        // 子类初始化
-        if(method_exists($this,'_initialize'))
-            $this->_initialize();
+		// 子类初始化
+		if (method_exists($this, '_initialize')) {
+			$this->_initialize();
+		}
 	}
 
 	/**
@@ -55,6 +60,8 @@ abstract class Controller
 
 	/**
 	 * 模板显示.
+	 *
+	 * @param mixed $templateFile
 	 */
 	protected function display($templateFile = '')
 	{
@@ -63,6 +70,8 @@ abstract class Controller
 
 	/**
 	 * 获取输出页面内容.
+	 *
+	 * @param mixed $templateFile
 	 */
 	protected function fetch($templateFile = '')
 	{

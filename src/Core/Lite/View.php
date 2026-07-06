@@ -1,10 +1,13 @@
 <?php
+/**
+ * @author: nydia87 <349196713@qq.com>
+ * @description:
+ */
 
 namespace ColaPHP\Framework\Core\Lite;
 
 class View
 {
-
 	protected $tVar = [];
 
 	public function assign($name = '', $value = null)
@@ -64,7 +67,7 @@ class View
 				$action = $names[0];
 			}
 		}
-        $file = sprintf("/%s/view/%s/%s.php",GROUP_NAME, $module, $action);
+		$file = sprintf('/%s/view/%s/%s.php', GROUP_NAME, $module, $action);
 		$filepath = APP_PATH . $file;
 		// 模板文件不存在直接返回
 		if (! is_file($filepath)) {

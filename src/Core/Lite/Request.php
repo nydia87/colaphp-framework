@@ -1,4 +1,8 @@
 <?php
+/**
+ * @author: nydia87 <349196713@qq.com>
+ * @description:
+ */
 
 namespace ColaPHP\Framework\Core\Lite;
 
@@ -7,13 +11,17 @@ use ColaPHP\Framework\Utils\Upload;
 class Request
 {
 	protected $method;
+
 	protected $input;
 
 	protected $param = [];
 
 	protected $get = [];
+
 	protected $post = [];
+
 	protected $request = [];
+
 	public function __construct()
 	{
 		// 保存 php://input
@@ -26,6 +34,7 @@ class Request
 	{
 		$this->{$name} = $value;
 	}
+
 	public function __get($name = '')
 	{
 		return $this->{$name} ?: '';

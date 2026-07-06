@@ -1,4 +1,8 @@
 <?php
+/**
+ * @author: nydia87 <349196713@qq.com>
+ * @description:
+ */
 
 namespace ColaPHP\Framework\Driver\Session;
 
@@ -8,7 +12,7 @@ class Redis extends RedisConnect implements \SessionHandlerInterface
 {
 	public function __construct($config = [])
 	{
-        $this->init($config);
+		$this->init($config);
 	}
 
 	public function close()
@@ -44,7 +48,7 @@ class Redis extends RedisConnect implements \SessionHandlerInterface
 	public function lock($sessID, $timeout = 10)
 	{
 		if (null == $this->redis_client) {
-            $this->open(null, null);
+			$this->open(null, null);
 		}
 
 		$lockKey = 'LOCK_PREFIX_' . $sessID;
@@ -63,14 +67,14 @@ class Redis extends RedisConnect implements \SessionHandlerInterface
 	public function unlock($sessID)
 	{
 		if (null == $this->redis_client) {
-            $this->open(null, null);
+			$this->open(null, null);
 		}
 
 		$this->redis_client->del('LOCK_PREFIX_' . $sessID);
 	}
 
-    public function gc($max_lifetime)
-    {
-        return true;
-    }
+	public function gc($max_lifetime)
+	{
+		return true;
+	}
 }

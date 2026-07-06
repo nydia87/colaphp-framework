@@ -1,10 +1,13 @@
 <?php
+/**
+ * @author: nydia87 <349196713@qq.com>
+ * @description:
+ */
 
 namespace ColaPHP\Framework\Core\Lite;
 
 class Session
 {
-
 	protected static $instance;
 
 	protected $config = [];
@@ -118,7 +121,6 @@ class Session
 		}
 
 		if (! empty($config['type'])) {
-
 			$class = '\ColaPHP\Framework\Driver\Session\\' . ucwords($config['type']);
 
 			if (! class_exists($class) || ! session_set_save_handler(new $class($config))) {
@@ -233,6 +235,9 @@ class Session
 
 	/**
 	 * session设置 下一次请求有效.
+	 *
+	 * @param mixed $name
+	 * @param mixed $value
 	 */
 	public function flash($name, $value)
 	{
@@ -269,6 +274,9 @@ class Session
 
 	/**
 	 * 删除session数据.
+	 *
+	 * @param mixed      $name
+	 * @param null|mixed $prefix
 	 */
 	public function delete($name, $prefix = null)
 	{
@@ -298,6 +306,8 @@ class Session
 
 	/**
 	 * 清空session数据.
+	 *
+	 * @param null|mixed $prefix
 	 */
 	public function clear($prefix = null)
 	{
@@ -313,6 +323,9 @@ class Session
 
 	/**
 	 * 判断session数据.
+	 *
+	 * @param mixed      $name
+	 * @param null|mixed $prefix
 	 */
 	public function has($name, $prefix = null)
 	{
@@ -335,6 +348,9 @@ class Session
 
 	/**
 	 * 添加数据到一个session数组.
+	 *
+	 * @param mixed $key
+	 * @param mixed $value
 	 */
 	public function push($key, $value)
 	{
@@ -393,5 +409,4 @@ class Session
 		session_write_close();
 		$this->init = false;
 	}
-
 }

@@ -16,7 +16,7 @@ return [
 		'error_message' => '页面错误！请稍后再试～',
 
 		// 默认设定
-        'default_timezone' => 'PRC',
+		'default_timezone' => 'PRC',
 		'default_group' => 'home',
 		'default_module' => 'Index',
 		'default_action' => 'index',
@@ -38,29 +38,29 @@ return [
 		'var_pathinfo' => 's',	// PATHINFO 兼容模式获取变量例如 ?s=/module/action/id/1 后面的参数取决于URL_PATHINFO_DEPR
 		'var_url_params' => '_URL_', // PATHINFO URL参数变量
 	],
-	'session'    => [
-        'id'             => '',
-        'var_session_id' => '',
-        'prefix'         => 'cola::session::',
-        'auto_start'     => true,
-        'httponly'       => true,
-        'secure'         => false,
-        'expire'         => 300,
-        'type'           => '', // 留空(原生) | redis
-        'redis_config' => []
-    ],
-    'cache' => [
-        'prefix' => 'cola::cache::',
-        'expire' => 300,
-        'type' => 'file', // file | redis
-        'redis_config' => []
-    ],
-    'log' => [
-        'level' => ['debug','info','notice','warning','error','sql'],
-        'time_format' => 'c',
-        'single' => false,
-        'file_size' => 2097152,
-        'apart_level' => ['warning','error','sql'],
-        'json' => false,
-    ]
+	'session' => [
+		'id' => '',
+		'var_session_id' => '',
+		'prefix' => 'cola::session::',
+		'auto_start' => true,
+		'httponly' => true,
+		'secure' => false,
+		'expire' => 300,
+		'type' => '', // 留空(原生) | redis
+		'redis_config' => [],
+	],
+	'cache' => [
+		'prefix' => 'cola::cache::',
+		'expire' => 300,
+		'type' => 'file', // file | redis
+		'redis_config' => [],
+	],
+	'log' => [
+		'level' => ['debug', 'info', 'notice', 'warning', 'error', 'sql'],
+		'time_format' => 'c',
+		'single' => false,
+		'file_size' => 2097152,
+		'apart_level' => ['warning', 'error', 'sql'],
+		'json' => false,
+	],
 ];

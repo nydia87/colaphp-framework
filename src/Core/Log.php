@@ -1,4 +1,8 @@
 <?php
+/**
+ * @author: nydia87 <349196713@qq.com>
+ * @description:
+ */
 
 namespace ColaPHP\Framework\Core;
 
@@ -14,13 +18,13 @@ class Log
 
 	protected $key;
 
-    public function __construct($config = [])
-    {
-        if (is_array($config)) {
-            $this->config = $config;
-        }
-        $this->driver = new File($config);
-    }
+	public function __construct($config = [])
+	{
+		if (is_array($config)) {
+			$this->config = $config;
+		}
+		$this->driver = new File($config);
+	}
 
 	public function init($config = [])
 	{
@@ -55,7 +59,7 @@ class Log
 				continue;
 			}
 
-			if ( in_array($level, $this->config['level']) ) {
+			if (in_array($level, $this->config['level'])) {
 				$log[$level] = $info;
 			}
 		}
@@ -67,24 +71,6 @@ class Log
 		}
 
 		return $result;
-	}
-
-	protected function log($level, $message, array $context = [])
-	{
-
-        if (is_string($message) && ! empty($context)) {
-            $replace = [];
-            foreach ($context as $key => $val) {
-                $replace['{' . $key . '}'] = $val;
-            }
-            $message = strtr($message, $replace);
-        }
-
-        if ( IS_CLI && in_array($level, $this->config['level'])) {
-            $this->driver->save([$level => [$message]]);
-        } else {
-            $this->log[$level][] = $message;
-        }
 	}
 
 	public function error($message, array $context = [])
@@ -115,5 +101,22 @@ class Log
 	public function sql($message, array $context = [])
 	{
 		$this->log(__FUNCTION__, $message, $context);
+	}
+
+	protected function log($level, $message, array $context = [])
+	{
+		if (is_string($message) && ! empty($context)) {
+			$replace = [];
+			foreach ($context as $key => $val) {
+				$replace['{' . $key . '}'] = $val;
+			}
+			$message = strtr($message, $replace);
+		}
+
+		if (IS_CLI && in_array($level, $this->config['level'])) {
+			$this->driver->save([$level => [$message]]);
+		} else {
+			$this->log[$level][] = $message;
+		}
 	}
 }

@@ -1,24 +1,26 @@
 <?php
+/**
+ * @author: nydia87 <349196713@qq.com>
+ * @description:
+ */
 
 namespace ColaPHP\Framework\Core;
 
 class Config
 {
+	public const PREFIX_APP = 'app.';
+
+	public const PREFIX_SESSION = 'session.';
+
+	public const PREFIX_LOG = 'log.';
+
+	public const PREFIX_CACHE = 'cache.';
+
+	public const PREFIX_DB = 'db.';
 
 	protected static $config = [];
 
-	public const PREFIX_APP = 'app.';
-
-    public const PREFIX_SESSION = 'session.';
-
-    public const PREFIX_LOG = 'log.';
-
-    public const PREFIX_CACHE = 'cache.';
-
-    public const PREFIX_DB = 'db.';
-
-
-    public static function load($file, $name = '')
+	public static function load($file, $name = '')
 	{
 		if (is_file($file)) {
 			$type = pathinfo($file, PATHINFO_EXTENSION);
@@ -43,12 +45,14 @@ class Config
 		// 无参数时获取所有
 		if (empty($name)) {
 			return self::$config;
-		} else if (false === strpos($name, '.')) {
+		}
+		if (false === strpos($name, '.')) {
 			$name = self::PREFIX_APP . $name;
 		}
 
 		if ('.' == substr($name, -1)) {
 			$name = strtolower(substr($name, 0, -1));
+
 			return isset(self::$config[$name]) ? self::$config[$name] : $default;
 		}
 
@@ -99,15 +103,15 @@ class Config
 				}
 				self::$config[$value] = $result;
 			} else {
-                foreach($name as $k => $v){
-                    if(isset(self::$config[$k])){
-                        self::$config[$k] = array_merge(self::$config[$k], $v);
-                    } else {
-                        self::$config[$k] = $v;
-                    }
-                }
-				//$result = self::$config = array_merge(self::$config, $name);
-                $result = self::$config;
+				foreach ($name as $k => $v) {
+					if (isset(self::$config[$k])) {
+						self::$config[$k] = array_merge(self::$config[$k], $v);
+					} else {
+						self::$config[$k] = $v;
+					}
+				}
+				// $result = self::$config = array_merge(self::$config, $name);
+				$result = self::$config;
 			}
 		} else {
 			// 为空直接返回 已有配置
@@ -119,7 +123,7 @@ class Config
 
 	/**
 	 * 移除配置.
-     * 配置参数名（支持三级配置 .号分割）
+	 * 配置参数名（支持三级配置 .号分割）.
 	 */
 	public static function remove(string $name)
 	{
@@ -133,6 +137,5 @@ class Config
 		} else {
 			unset(self::$config[strtolower($name[0])][$name[1]][$name[2]]);
 		}
-
 	}
 }

@@ -4,9 +4,8 @@
     "license": "MIT",
     "keywords": ["php","colaphp","mvc"],
     "type": "library",
-    "version": "1.0.0",
     "require": {
-        "php": ">=7.0",
+        "php": ">=7.1",
         "colaphp/db": "dev-main"
     },
     "autoload": {
@@ -31,5 +30,6 @@
             "name": "nydia87",
             "email": "349196713@qq.com"
         }
-    ]
+    ],
+    "minimum-stability": "dev"
 }

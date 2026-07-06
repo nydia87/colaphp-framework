@@ -3,24 +3,25 @@
  * @author: nydia87 <349196713@qq.com>
  * @description:
  */
-
+use ColaPHP\Framework\Core\Cache;
 use ColaPHP\Framework\Core\Config;
 use ColaPHP\Framework\Core\Env;
 use ColaPHP\Framework\Core\Lite\Session;
 use ColaPHP\Framework\Core\Log;
-use ColaPHP\Framework\Core\Cache;
 
 if (! defined('COLAPHP_PATH')) {
-    exit;
+	exit;
 }
 
 /**
- * 错误输出
+ * 错误输出.
+ *
+ * @param mixed $error
  */
 function halt($error)
 {
 	$e = [];
-	$config = config(Config::PREFIX_APP );
+	$config = config(Config::PREFIX_APP);
 	if (IS_CLI) {
 		var_dump($error);
 	} else {
@@ -67,20 +68,22 @@ function halt($error)
 }
 
 /**
- * 获取全局 Log
+ * 获取全局 Log.
  */
 function logger()
 {
 	static $log;
 	if (! isset($log)) {
-		$log = new Log(config(Config::PREFIX_LOG ));
+		$log = new Log(config(Config::PREFIX_LOG));
 	}
 
 	return $log;
 }
 
 /**
- * 调用项目类
+ * 调用项目类.
+ *
+ * @param mixed $name
  */
 function import($name = '')
 {
@@ -105,8 +108,8 @@ function import($name = '')
 	}
 	$class = sprintf('\%s\%s\%s\%s', ucfirst(APP_NAME), $group, $model, $action);
 
-	if (! class_exists($class) ) {
-        halt("class load error : " . $class);
+	if (! class_exists($class)) {
+		halt('class load error : ' . $class);
 	}
 	$obj = new $class();
 	$_class[$name] = $obj;
@@ -116,6 +119,8 @@ function import($name = '')
 
 /**
  * 过滤表单中的表达式.
+ *
+ * @param mixed $value
  */
 function walk_recursive_filter(&$value)
 {
@@ -152,7 +157,11 @@ function env($name = null, $default = null)
 }
 
 /**
- * Session
+ * Session.
+ *
+ * @param mixed      $name
+ * @param mixed      $value
+ * @param null|mixed $prefix
  */
 function session($name, $value = '', $prefix = null)
 {
@@ -170,26 +179,30 @@ function session($name, $value = '', $prefix = null)
 }
 
 /**
- * 缓存
+ * 缓存.
+ *
+ * @param mixed      $name
+ * @param mixed      $value
+ * @param null|mixed $expire
  */
-function cache($name, $value='', $expire=null) {
+function cache($name, $value = '', $expire = null)
+{
+	if (is_null($name)) {
+		return Cache::getInstance()->clear();
+	}
 
-    if( is_null($name) ){
-        return Cache::getInstance()->clear();
-    }
+	if ('' !== $value) {
+		if (is_null($value)) {
+			// 删除缓存
+			return Cache::getInstance()->rm($name);
+		}
 
-    if ('' !== $value) {
-        if (is_null($value)) {
-            // 删除缓存
-            return Cache::getInstance()->rm($name);
-        }else {
-            // 缓存数据
-            return Cache::getInstance()->set($name, $value, $expire);
-        }
-    } else {
-        // 获取缓存数据
-        return Cache::getInstance()->get($name);
-    }
+		// 缓存数据
+		return Cache::getInstance()->set($name, $value, $expire);
+	}
+
+	// 获取缓存数据
+	return Cache::getInstance()->get($name);
 }
 
 /**
@@ -215,6 +228,10 @@ function parse_name($name, $type = 0, $ucfirst = true)
 
 /**
  * 重定向地址
+ *
+ * @param mixed $url
+ * @param mixed $time
+ * @param mixed $msg
  */
 function redirect($url, $time = 0, $msg = '')
 {
@@ -244,6 +261,10 @@ function redirect($url, $time = 0, $msg = '')
 
 /**
  * XML 编码
+ *
+ * @param mixed $data
+ * @param mixed $encoding
+ * @param mixed $root
  */
 function xml_encode($data = [], $encoding = 'utf-8', $root = 'colaphp')
 {
@@ -257,6 +278,8 @@ function xml_encode($data = [], $encoding = 'utf-8', $root = 'colaphp')
 
 /**
  * XML编码 data.
+ *
+ * @param mixed $data
  */
 function data_to_xml($data = [])
 {
@@ -273,7 +296,10 @@ function data_to_xml($data = [])
 }
 
 /**
- * 循环创建目录
+ * 循环创建目录.
+ *
+ * @param mixed $dir
+ * @param mixed $mode
  */
 function mk_dir($dir = '', $mode = 0777)
 {
@@ -288,7 +314,10 @@ function mk_dir($dir = '', $mode = 0777)
 }
 
 /**
- * 使用正则验证数据
+ * 使用正则验证数据.
+ *
+ * @param mixed $value
+ * @param mixed $rule
  */
 function regex($value, $rule)
 {

@@ -1,10 +1,13 @@
 <?php
+/**
+ * @author: nydia87 <349196713@qq.com>
+ * @description:
+ */
 
 namespace ColaPHP\Framework\Core;
 
 class Env
 {
-
 	protected static $data = [];
 
 	public static function load($file)
