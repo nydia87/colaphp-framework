@@ -16,20 +16,10 @@
             "ColaPHP\\Framework\\": "src/"
         }
     },
-    "config": {
-        "sort-packages": true
-    },
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/nydia87/colaphp-db.git"
-        }
-    ],
     "authors": [
         {
             "name": "nydia87",
             "email": "349196713@qq.com"
         }
-    ],
-    "minimum-stability": "dev"
+    ]
 }
