@@ -4,7 +4,7 @@
  * @description:
  */
 
-namespace ColaPHP\Framework\Core\Lite;
+namespace ColaPHP\Framework\Core;
 
 class Session
 {

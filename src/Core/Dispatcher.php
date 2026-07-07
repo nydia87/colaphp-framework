@@ -4,9 +4,7 @@
  * @description:
  */
 
-namespace ColaPHP\Framework\Core\Lite;
-
-use ColaPHP\Framework\Core\Config;
+namespace ColaPHP\Framework\Core;
 
 class Dispatcher
 {

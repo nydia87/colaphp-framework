@@ -17,11 +17,7 @@ class ColaPHP
 		set_exception_handler(['ColaPHP\Framework\ColaPHP', 'appException']);
 		spl_autoload_register(['ColaPHP\Framework\ColaPHP', 'autoload']);
 		ColaPHP::buildApp();
-		if (IS_CLI) {
-			Core\Cli\App::run();
-		} else {
-			Core\Lite\App::run();
-		}
+		Core\App::run();
 	}
 
 	/**
