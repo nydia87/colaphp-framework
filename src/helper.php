@@ -8,16 +8,8 @@ use ColaPHP\Framework\Core\Env;
 
 const DS = DIRECTORY_SEPARATOR;
 
-if (! defined('PROJECT_PATH')) {
-	exit('Error: need define `PROJECT_PATH` ]');
-}
-define('ROOT_PATH', rtrim(PROJECT_PATH, '/\\') . DS);
-
-if (defined('FRAME_PATH')) {
-	define('COLAPHP_PATH', rtrim(FRAME_PATH, '/\\') . DS);
-} else {
-	define('COLAPHP_PATH', ROOT_PATH . str_replace('/', DS, 'vendor/colaphp/framework/src/'));
-}
+define('ROOT_PATH', dirname(__FILE__, 5) . DS);
+define('COLAPHP_PATH', dirname(__FILE__) . DS);
 
 if (! is_file(COLAPHP_PATH . 'helper.php')) {
 	exit('Error: invalid path : `' . COLAPHP_PATH . '`');
