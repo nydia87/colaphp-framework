@@ -20,7 +20,7 @@ class Dispatcher
 		$routeParams = static::parseRouteParams($config);
 		$_GET = array_merge($routeParams, $_GET);
 		// 定义路由常量
-		define('GROUP_NAME', static::getGroup($config['var_group'], $config));
+		defined('GROUP_NAME') or define('GROUP_NAME', static::getGroup($config['var_group'], $config));
 		define('MODULE_NAME', static::getModule($config['var_module'], $config));
 		define('ACTION_NAME', static::getAction($config['var_action'], $config));
 		$_REQUEST = array_merge($_POST, $_GET);
@@ -44,9 +44,7 @@ class Dispatcher
 	 */
 	private static function getAction(string $var, array $config): string
 	{
-		$action = ! empty($_POST[$var])
-			? $_POST[$var]
-			: (! empty($_GET[$var]) ? $_GET[$var] : $config['default_action']);
+		$action = (! empty($_GET[$var]) ? $_GET[$var] : $config['default_action']);
 		unset($_POST[$var],$_GET[$var]);
 
 		return strip_tags($action);
@@ -112,11 +110,6 @@ class Dispatcher
 	private static function parseRouteParams(array $config): array
 	{
 		if (empty($_SERVER['PATH_INFO'])) {
-			// 支持自定义 GROUP
-			if (defined('DEFAULT_GROUP_NAME')) {
-				return [$config['var_group'] => DEFAULT_GROUP_NAME];
-			}
-
 			return [];
 		}
 
@@ -131,20 +124,16 @@ class Dispatcher
 		}
 
 		$var = [];
-		// 支持自定义 GROUP
-		if (defined('DEFAULT_GROUP_NAME')) {
-			$var[$config['var_group']] = DEFAULT_GROUP_NAME;
-		} else {
-			if (! isset($_GET[$config['var_group']])) {
-				$var[$config['var_group']] = ! empty($paths) ? array_shift($paths) : $config['var_group'];
-			}
+
+		if (! isset($_GET[$config['var_group']]) && ! empty($paths)) {
+			$var[$config['var_group']] = in_array($paths[0], $config['default_group_list']) ? array_shift($paths) : '';
 		}
 
 		if (! isset($_GET[$config['var_module']])) {
-			$var[$config['var_module']] = ! empty($paths) ? array_shift($paths) : $config['default_module'];
+			$var[$config['var_module']] = ! empty($paths) ? array_shift($paths) : '';
 		}
 
-		$var[$config['var_action']] = ! empty($paths) ? array_shift($paths) : $config['default_action'];
+		$var[$config['var_action']] = ! empty($paths) ? array_shift($paths) : '';
 
 		if (! empty($paths)) {
 			$deprEscaped = preg_quote($depr, '@');

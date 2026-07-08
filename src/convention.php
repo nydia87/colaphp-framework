@@ -17,6 +17,7 @@ return [
 
 		// 默认设定
 		'default_timezone' => 'PRC',
+		'default_group_list' => ['admin', 'home', 'api'],
 		'default_group' => 'home',
 		'default_module' => 'Index',
 		'default_action' => 'index',

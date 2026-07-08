@@ -80,6 +80,10 @@ class Model
 	/**
 	 * 查找单条记录.
 	 *
+	 * @param mixed $query
+	 * @param mixed $bindings
+	 * @param mixed $slave
+	 *
 	 * @return mixed
 	 */
 	public function selectOne($query, $bindings = [], $slave = true)
@@ -90,6 +94,10 @@ class Model
 	/**
 	 * 查找多条记录.
 	 *
+	 * @param mixed $query
+	 * @param mixed $bindings
+	 * @param mixed $slave
+	 *
 	 * @return mixed
 	 */
 	public function select($query, $bindings = [], $slave = true)
@@ -98,6 +106,8 @@ class Model
 	}
 
 	/**
+	 * @param mixed $query
+	 *
 	 * @return mixed
 	 */
 	public function exec($query)

@@ -6,17 +6,13 @@
 
 namespace ColaPHP\Framework;
 
-use ColaPHP\Framework\Core\Config;
-use ColaPHP\Framework\Core\Env;
-
 class ColaPHP
 {
+	/**
+	 * 运行.
+	 */
 	public static function start(): void
 	{
-		set_error_handler(['ColaPHP\Framework\ColaPHP', 'appError']);
-		set_exception_handler(['ColaPHP\Framework\ColaPHP', 'appException']);
-		spl_autoload_register(['ColaPHP\Framework\ColaPHP', 'autoload']);
-		ColaPHP::buildApp();
 		Core\App::run();
 	}
 
@@ -34,25 +30,5 @@ class ColaPHP
 	public static function appException(\Throwable $e): void
 	{
 		halt($e->__toString());
-	}
-
-	/**
-	 * 自动加载路径.
-	 *
-	 * @param mixed $class
-	 */
-	public static function autoload($class): void {}
-
-	private static function buildApp()
-	{
-		Config::set(include COLAPHP_PATH . 'convention.php');
-
-		if (is_file(ROOT_PATH . '.env')) {
-			Env::load(ROOT_PATH . '.env');
-		}
-
-		include COLAPHP_PATH . 'common.php';
-
-		bulid_runtime();
 	}
 }

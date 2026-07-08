@@ -96,7 +96,7 @@ class File
 			$name = is_string($this->config['single']) ? $this->config['single'] : 'single';
 			$destination = LOG_PATH . $name . $cli . '.log';
 		} else {
-			$filename = date('Ym') . DIRECTORY_SEPARATOR . date('d') . $cli . '.log';
+			$filename = date('Ym') . DS . date('d') . $cli . '.log';
 			$destination = LOG_PATH . $filename;
 		}
 
@@ -113,14 +113,14 @@ class File
 			$name = date('d');
 		}
 
-		return $path . DIRECTORY_SEPARATOR . $name . '_' . $type . $cli . '.log';
+		return $path . DS . $name . '_' . $type . $cli . '.log';
 	}
 
 	protected function checkLogSize($destination)
 	{
 		if (is_file($destination) && floor($this->config['file_size']) <= filesize($destination)) {
 			try {
-				rename($destination, dirname($destination) . DIRECTORY_SEPARATOR . time() . '-' . basename($destination));
+				rename($destination, dirname($destination) . DS . time() . '-' . basename($destination));
 			} catch (\Exception $e) {
 			}
 		}

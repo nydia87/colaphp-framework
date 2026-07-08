@@ -315,7 +315,7 @@ class Upload extends \SplFileObject
 			return false;
 		}
 
-		$path = rtrim($path, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
+		$path = rtrim($path, '/\\') . DS;
 		// 文件保存命名规则
 		$saveName = $this->buildSaveName($savename, $autoAppendExt);
 		$filename = $path . $saveName;
@@ -439,16 +439,16 @@ class Upload extends \SplFileObject
 		} else {
 			switch ($this->rule) {
 				case 'date':
-					$savename = date('Ymd') . DIRECTORY_SEPARATOR . md5(microtime(true));
+					$savename = date('Ymd') . DS . md5(microtime(true));
 					break;
 				default:
 					if (in_array($this->rule, hash_algos())) {
 						$hash = $this->hash($this->rule);
-						$savename = substr($hash, 0, 2) . DIRECTORY_SEPARATOR . substr($hash, 2);
+						$savename = substr($hash, 0, 2) . DS . substr($hash, 2);
 					} elseif (is_callable($this->rule)) {
 						$savename = call_user_func($this->rule);
 					} else {
-						$savename = date('Ymd') . DIRECTORY_SEPARATOR . md5(microtime(true));
+						$savename = date('Ymd') . DS . md5(microtime(true));
 					}
 			}
 		}

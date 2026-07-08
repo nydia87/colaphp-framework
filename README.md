@@ -10,11 +10,11 @@ PHP 开发简单的 MVC 框架
 // 项目路径
 const PROJECT_PATH = 'D:\code\php';
 
-// 框架路径
-const FRAME_PATH = 'D:\code\php\vendor\colaphp\framework\src';
+// 自定义框架路径（非必须），默认值 `PROJECT_PATH` + `\vendor\colaphp\framework\src`
+const FRAME_PATH = 'D:\code\framework\src';
 
-// 默认分组
-const DEFAULT_GROUP_NAME = 'home';
+// 自定义当前分组名（非必须），若定义则分组功能失效
+const GROUP_NAME = 'api';
 
 // 自动加载
 require '../vendor/autoload.php';

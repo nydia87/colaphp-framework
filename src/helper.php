@@ -3,34 +3,36 @@
  * @author: nydia87 <349196713@qq.com>
  * @description:
  */
+use ColaPHP\Framework\Core\Config;
+use ColaPHP\Framework\Core\Env;
+
+const DS = DIRECTORY_SEPARATOR;
+
 if (! defined('PROJECT_PATH')) {
-	exit('need define `PROJECT_PATH` !!!');
+	exit('Error: need define `PROJECT_PATH` ]');
 }
+define('ROOT_PATH', rtrim(PROJECT_PATH, '/\\') . DS);
 
-$project_path = PROJECT_PATH;
-define('ROOT_PATH', rtrim($project_path, '/\\') . DIRECTORY_SEPARATOR);
-
-if (! defined('FRAME_PATH')) {
-	exit('need define `FRAME_PATH` !!!');
+if (defined('FRAME_PATH')) {
+	define('COLAPHP_PATH', rtrim(FRAME_PATH, '/\\') . DS);
+} else {
+	define('COLAPHP_PATH', ROOT_PATH . str_replace('/', DS, 'vendor/colaphp/framework/src/'));
 }
-
-$frame_path = FRAME_PATH;
-
-define('COLAPHP_PATH', rtrim($frame_path, '/\\') . DIRECTORY_SEPARATOR);
 
 if (! is_file(COLAPHP_PATH . 'helper.php')) {
-	exit('Invalid path. `FRAME_PATH` : ' . FRAME_PATH . ' !!!');
+	exit('Error: invalid path : `' . COLAPHP_PATH . '`');
 }
 
 const APP_NAME = 'app';
 const IS_CLI = PHP_SAPI == 'cli' ? 1 : 0;
-const APP_PATH = ROOT_PATH . APP_NAME . DIRECTORY_SEPARATOR;
-const RUNTIME_PATH = ROOT_PATH . 'runtime' . DIRECTORY_SEPARATOR;
-const LOG_PATH = RUNTIME_PATH . 'logs' . DIRECTORY_SEPARATOR;
-const CACHE_PATH = RUNTIME_PATH . 'cache' . DIRECTORY_SEPARATOR;
+const APP_PATH = ROOT_PATH . APP_NAME . DS;
+const RUNTIME_PATH = ROOT_PATH . 'runtime' . DS;
+const LOG_PATH = RUNTIME_PATH . 'logs' . DS;
+const CACHE_PATH = RUNTIME_PATH . 'cache' . DS;
 
-function bulid_runtime()
+function app_init()
 {
+	// Runtime
 	if (! is_dir(RUNTIME_PATH)) {
 		@mkdir(RUNTIME_PATH, 0755);
 	} elseif (! is_writeable(RUNTIME_PATH)) {
@@ -43,4 +45,37 @@ function bulid_runtime()
 	if (! is_dir(CACHE_PATH)) {
 		@mkdir(CACHE_PATH, 0755);
 	}
+
+	// 框架配置
+	Config::set(include COLAPHP_PATH . 'convention.php');
+	if (is_file(ROOT_PATH . '.env')) {
+		Env::load(ROOT_PATH . '.env');
+	}
+	include COLAPHP_PATH . 'common.php';
+
+	// 项目配置
+	if (is_file(APP_PATH . 'config.php')) {
+		Config::load(APP_PATH . 'config.php');
+	}
+	if (is_file(APP_PATH . 'common.php')) {
+		include APP_PATH . 'common.php';
+	}
+
+	// 分组配置
+	if (defined('GROUP_NAME')) {
+		if (is_file(APP_PATH . GROUP_NAME . DS . 'config.php')) {
+			Config::load(APP_PATH . GROUP_NAME . DS . 'config.php');
+		}
+		if (is_file(APP_PATH . GROUP_NAME . DS . 'function.php')) {
+			include APP_PATH . GROUP_NAME . DS . 'function.php';
+		}
+	}
+
+	// 设置系统时区
+	date_default_timezone_set(config(Config::PREFIX_APP . 'default_timezone'));
+
+	// 错误、异常
+	set_error_handler(['ColaPHP\Framework\ColaPHP', 'appError']);
+	set_exception_handler(['ColaPHP\Framework\ColaPHP', 'appException']);
 }
+app_init();
