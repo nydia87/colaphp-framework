@@ -88,14 +88,6 @@ class Dispatcher
 		if (empty($_SERVER['PATH_INFO'])) {
 			$types = explode(',', $config['url_pathinfo_fetch']);
 			foreach ($types as $type) {
-				if (0 === strpos($type, ':')) {
-					$funcName = substr($type, 1);
-					$allowedFuncs = ['getPathInfo', 'customPathResolver'];
-					if (in_array($funcName, $allowedFuncs, true) && function_exists($funcName)) {
-						$_SERVER['PATH_INFO'] = call_user_func($funcName);
-						break;
-					}
-				}
 				if (! empty($_SERVER[$type])) {
 					$_SERVER['PATH_INFO'] = static::stripScriptName($_SERVER[$type]);
 					break;
