@@ -1,7 +1,6 @@
 <?php
 /**
  * @author: nydia87 <349196713@qq.com>
- * @description:
  */
 
 namespace ColaPHP\Framework\Core;
@@ -31,31 +30,25 @@ class App
 	 */
 	private static function exec(): void
 	{
-		// 安全检测
 		if (! preg_match('/^[A-Za-z_0-9]+$/', MODULE_NAME)) {
 			$module = false;
 		} else {
-			// 创建控制器实例
 			$module = import(GROUP_NAME . '/controller/' . MODULE_NAME);
 		}
 
+		$module = $module ?: import(GROUP_NAME . '/controller/Error');
+
 		if (! $module) {
-			// 空模块
-			$module = import(GROUP_NAME . '/controller/Error');
-			if (! $module) {
-				halt('class not exists: ' . GROUP_NAME . '~' . MODULE_NAME);
-			}
+			halt('class not exists: ' . GROUP_NAME . '~' . MODULE_NAME);
 		}
-		// 获取当前操作名
+
 		$action = ACTION_NAME;
-		if (! method_exists($module, $action)) {
-			// 空方法
-			$action = '_empty';
-			if (! method_exists($module, $action)) {
-				halt('action not exists: ' . GROUP_NAME . '~' . MODULE_NAME . '~' . ACTION_NAME);
-			}
+		if (method_exists($module, $action)) {
+			$module->{$action}();
+		} elseif (method_exists($module, '_empty')) {
+			$module->_empty();
+		} else {
+			halt('action not exists: ' . GROUP_NAME . '~' . MODULE_NAME . '~' . ACTION_NAME);
 		}
-		// 执行当前操作
-		$module->{$action}();
 	}
 }
