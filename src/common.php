@@ -109,7 +109,7 @@ function import($name = '')
 	$class = sprintf('\%s\%s\%s\%s', ucfirst(APP_NAME), $group, $model, $action);
 
 	if (! class_exists($class)) {
-		halt('class load error : ' . $class);
+		return false;
 	}
 	$obj = new $class();
 	$_class[$name] = $obj;

@@ -40,12 +40,20 @@ class App
 		}
 
 		if (! $module) {
-			halt('class not exists: ' . GROUP_NAME . '~' . MODULE_NAME);
+			// 空模块
+			$module = import(GROUP_NAME . '/controller/Error');
+			if (! $module) {
+				halt('class not exists: ' . GROUP_NAME . '~' . MODULE_NAME);
+			}
 		}
 		// 获取当前操作名
 		$action = ACTION_NAME;
 		if (! method_exists($module, $action)) {
-			halt('action not exists: ' . GROUP_NAME . '~' . MODULE_NAME . '~' . ACTION_NAME);
+			// 空方法
+			$action = '_empty';
+			if (! method_exists($module, $action)) {
+				halt('action not exists: ' . GROUP_NAME . '~' . MODULE_NAME . '~' . ACTION_NAME);
+			}
 		}
 		// 执行当前操作
 		$module->{$action}();
