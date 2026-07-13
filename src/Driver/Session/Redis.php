@@ -2,7 +2,6 @@
 /**
  * @author: nydia87 <349196713@qq.com>
  */
-
 namespace ColaPHP\Framework\Driver\Session;
 
 use ColaPHP\Framework\Driver\RedisConnect;
@@ -14,7 +13,7 @@ class Redis extends RedisConnect implements \SessionHandlerInterface
 		$this->init($config);
 	}
 
-	public function close()
+	public function close(): bool
 	{
 		$this->gc(ini_get('session.gc_maxlifetime'));
 		$this->redis_client->close();
@@ -23,12 +22,12 @@ class Redis extends RedisConnect implements \SessionHandlerInterface
 		return true;
 	}
 
-	public function read($sessID)
+	public function read($sessID): string
 	{
 		return (string) $this->redis_client->get($this->config['prefix'] . $sessID);
 	}
 
-	public function write($sessID, $sessData)
+	public function write($sessID, $sessData): bool
 	{
 		if ($this->config['expire'] > 0) {
 			$result = $this->redis_client->setex($this->config['prefix'] . $sessID, $this->config['expire'], $sessData);
@@ -39,7 +38,7 @@ class Redis extends RedisConnect implements \SessionHandlerInterface
 		return $result ? true : false;
 	}
 
-	public function destroy($sessID)
+	public function destroy($sessID): bool
 	{
 		return $this->redis_client->delete($this->config['prefix'] . $sessID) > 0;
 	}

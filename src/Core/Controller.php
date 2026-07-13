@@ -2,7 +2,6 @@
 /**
  * @author: nydia87 <349196713@qq.com>
  */
-
 namespace ColaPHP\Framework\Core;
 
 abstract class Controller
@@ -34,6 +33,14 @@ abstract class Controller
 		if (method_exists($this, '_initialize')) {
 			$this->_initialize();
 		}
+	}
+
+	/**
+	 * 析构方法.
+	 */
+	public function __destruct()
+	{
+		logger()->save();
 	}
 
 	/**
@@ -86,5 +93,31 @@ abstract class Controller
 	protected function assign($name = null, $value = null)
 	{
 		$this->view->assign($name, $value);
+	}
+
+	/**
+	 * 错误跳转.
+	 *
+	 * @param mixed      $message
+	 * @param null|mixed $data
+	 */
+	protected function error($message = '', $data = null)
+	{
+		$type = is_ajax() ? 'JSON' : 'EVAL';
+
+		return cola_return($message, 0, $data, $type);
+	}
+
+	/**
+	 * 成功跳转.
+	 *
+	 * @param mixed      $message
+	 * @param null|mixed $data
+	 */
+	protected function success($message = '', $data = null)
+	{
+		$type = is_ajax() ? 'JSON' : 'EVAL';
+
+		return cola_return($message, 1, $data, $type);
 	}
 }

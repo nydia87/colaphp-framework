@@ -2,7 +2,6 @@
 /**
  * @author: nydia87 <349196713@qq.com>
  */
-
 namespace ColaPHP\Framework\Utils;
 
 class Verify
@@ -92,7 +91,7 @@ class Verify
 	{
 		$key = $this->authcode($this->seKey) . $id;
 		// 验证码不能为空
-		$sessionId = $_REQUEST['sessionId'];
+		$sessionId = $_REQUEST['sessionId'] ?? false;
 		if ($sessionId) {
 			session_id($sessionId);
 		}
@@ -181,7 +180,7 @@ class Verify
 		$secode['verify_code'] = $code; // 把校验码保存到session
 		$secode['verify_time'] = time();  // 验证码创建时间
 
-		$sessionId = isset($_REQUEST['sessionId']) ? $_REQUEST['sessionId'] : false;
+		$sessionId = $_REQUEST['sessionId'] ?? false;
 		if ($sessionId) {
 			session_id($sessionId);
 		}

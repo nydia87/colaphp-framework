@@ -2,7 +2,6 @@
 /**
  * @author: nydia87 <349196713@qq.com>
  */
-
 namespace ColaPHP\Framework\Driver\Cache;
 
 class File
@@ -15,7 +14,7 @@ class File
 
 	public function __construct($config = [])
 	{
-		if (! empty($config)) {
+		if (!empty($config)) {
 			$this->config = $config;
 		}
 		$this->connected = is_dir(CACHE_PATH) && is_writeable(CACHE_PATH);
@@ -24,7 +23,7 @@ class File
 	public function get($name)
 	{
 		$filename = $this->filename($name);
-		if (! $this->isConnected() || ! is_file($filename)) {
+		if (!$this->isConnected() || !is_file($filename)) {
 			return false;
 		}
 		$content = file_get_contents($filename);
@@ -77,7 +76,7 @@ class File
 		$path = CACHE_PATH;
 		if ($dir = opendir($path)) {
 			while ($file = readdir($dir)) {
-				if (! is_dir($file)) {
+				if (!is_dir($file)) {
 					unlink($path . $file);
 				}
 			}

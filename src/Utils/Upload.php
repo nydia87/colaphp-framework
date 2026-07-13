@@ -2,7 +2,6 @@
 /**
  * @author: nydia87 <349196713@qq.com>
  */
-
 namespace ColaPHP\Framework\Utils;
 
 class Upload extends \SplFileObject
@@ -122,7 +121,7 @@ class Upload extends \SplFileObject
 	 */
 	public function hash($type = 'sha1')
 	{
-		if (! isset($this->hash[$type])) {
+		if (!isset($this->hash[$type])) {
 			$this->hash[$type] = hash_file($type, $this->filename);
 		}
 
@@ -190,10 +189,10 @@ class Upload extends \SplFileObject
 	{
 		$rule = $rule ?: $this->validate;
 
-		if ((isset($rule['size']) && ! $this->checkSize($rule['size']))
-			|| (isset($rule['type']) && ! $this->checkMime($rule['type']))
-			|| (isset($rule['ext']) && ! $this->checkExt($rule['ext']))
-			|| ! $this->checkImg()) {
+		if ((isset($rule['size']) && !$this->checkSize($rule['size']))
+			|| (isset($rule['type']) && !$this->checkMime($rule['type']))
+			|| (isset($rule['ext']) && !$this->checkExt($rule['ext']))
+			|| !$this->checkImg()) {
 			return false;
 		}
 
@@ -215,7 +214,7 @@ class Upload extends \SplFileObject
 
 		$extension = strtolower(pathinfo($this->getInfo('name'), PATHINFO_EXTENSION));
 
-		if (! in_array($extension, $ext)) {
+		if (!in_array($extension, $ext)) {
 			$this->error = 'extensions to upload is not allowed';
 
 			return false;
@@ -234,7 +233,7 @@ class Upload extends \SplFileObject
 		$extension = strtolower(pathinfo($this->getInfo('name'), PATHINFO_EXTENSION));
 
 		// 对图像文件进行严格检测
-		if (in_array($extension, ['gif', 'jpg', 'jpeg', 'bmp', 'png', 'swf']) && ! in_array($this->getImageType($this->filename), [1, 2, 3, 4, 6, 13])) {
+		if (in_array($extension, ['gif', 'jpg', 'jpeg', 'bmp', 'png', 'swf']) && !in_array($this->getImageType($this->filename), [1, 2, 3, 4, 6, 13])) {
 			$this->error = 'illegal image files';
 
 			return false;
@@ -274,7 +273,7 @@ class Upload extends \SplFileObject
 			$mime = explode(',', $mime);
 		}
 
-		if (! in_array(strtolower($this->getMime()), $mime)) {
+		if (!in_array(strtolower($this->getMime()), $mime)) {
 			$this->error = 'mimetype to upload is not allowed';
 
 			return false;
@@ -296,21 +295,21 @@ class Upload extends \SplFileObject
 	public function move($path, $savename = true, $replace = true, $autoAppendExt = true)
 	{
 		// 文件上传失败，捕获错误代码
-		if (! empty($this->info['error'])) {
+		if (!empty($this->info['error'])) {
 			$this->error($this->info['error']);
 
 			return false;
 		}
 
 		// 检测合法性
-		if (! $this->isValid()) {
+		if (!$this->isValid()) {
 			$this->error = 'upload illegal files';
 
 			return false;
 		}
 
 		// 验证上传
-		if (! $this->check()) {
+		if (!$this->check()) {
 			return false;
 		}
 
@@ -325,14 +324,14 @@ class Upload extends \SplFileObject
 		}
 
 		// 不覆盖同名文件
-		if (! $replace && is_file($filename)) {
+		if (!$replace && is_file($filename)) {
 			$this->error = ['has the same filename: {:filename}', ['filename' => $filename]];
 
 			return false;
 		}
 
 		// 移动文件
-		if (! move_uploaded_file($this->filename, $filename)) {
+		if (!move_uploaded_file($this->filename, $filename)) {
 			$this->error = 'upload write error';
 
 			return false;

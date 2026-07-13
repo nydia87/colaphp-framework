@@ -2,7 +2,6 @@
 /**
  * @author: nydia87 <349196713@qq.com>
  */
-
 namespace ColaPHP\Framework\Utils\Image;
 
 class Gif
@@ -31,7 +30,7 @@ class Gif
 	 */
 	public function __construct($src = null, $mod = 'url')
 	{
-		if (! is_null($src)) {
+		if (!is_null($src)) {
 			if ('url' == $mod && is_file($src)) {
 				$src = file_get_contents($src);
 			}

@@ -7,8 +7,9 @@ use ColaPHP\Framework\Core\Config;
 use ColaPHP\Framework\Core\Env;
 use ColaPHP\Framework\Core\Log;
 use ColaPHP\Framework\Core\Session;
+use ColaPHP\Framework\Utils\Verify;
 
-if (! defined('COLAPHP_PATH')) {
+if (!defined('COLAPHP_PATH')) {
 	exit;
 }
 
@@ -26,7 +27,7 @@ function halt($error)
 	} else {
 		if ($config['app_debug']) {
 			// 调试模式下输出错误信息
-			if (! is_array($error)) {
+			if (!is_array($error)) {
 				$trace = debug_backtrace();
 				$e['message'] = $error;
 				$e['file'] = $trace[0]['file'];
@@ -50,7 +51,7 @@ function halt($error)
 		} else {
 			// 否则定向到错误页面
 			$error_page = $config['error_page'];
-			if (! empty($error_page)) {
+			if (!empty($error_page)) {
 				redirect($error_page);
 			} else {
 				if ($config['show_error_msg']) {
@@ -72,7 +73,7 @@ function halt($error)
 function logger()
 {
 	static $log;
-	if (! isset($log)) {
+	if (!isset($log)) {
 		$log = new Log(config(Config::PREFIX_LOG));
 	}
 
@@ -107,7 +108,7 @@ function import($name = '')
 	}
 	$class = sprintf('\%s\%s\%s\%s', ucfirst(APP_NAME), $group, $model, $action);
 
-	if (! class_exists($class)) {
+	if (!class_exists($class)) {
 		return false;
 	}
 	$obj = new $class();
@@ -239,7 +240,7 @@ function redirect($url, $time = 0, $msg = '')
 	if (empty($msg)) {
 		$msg = "系统将在{$time}秒之后自动跳转到{$url}！";
 	}
-	if (! headers_sent()) {
+	if (!headers_sent()) {
 		// redirect
 		if (0 === $time) {
 			header('Location: ' . $url);
@@ -305,7 +306,7 @@ function mk_dir($dir = '', $mode = 0777)
 	if (is_dir($dir) || @mkdir($dir, $mode)) {
 		return true;
 	}
-	if (! mk_dir(dirname($dir), $mode)) {
+	if (!mk_dir(dirname($dir), $mode)) {
 		return false;
 	}
 
@@ -335,10 +336,128 @@ function regex($value, $rule)
 		$rule = $regexs[$rule];
 	}
 
-	if (0 !== strpos($rule, '/') && ! preg_match('/\/[imsU]{0,4}$/', $rule)) {
+	if (0 !== strpos($rule, '/') && !preg_match('/\/[imsU]{0,4}$/', $rule)) {
 		// 不是正则表达式则两端补上/
 		$rule = '/^' . $rule . '$/';
 	}
 
 	return is_scalar($value) && 1 === preg_match($rule, (string) $value);
+}
+
+/**
+ * 验证邮箱.
+ *
+ * @param mixed $email
+ */
+function validate_email($email)
+{
+	return filter_var($email, FILTER_VALIDATE_EMAIL);
+}
+
+/**
+ * 判断是否为 ajax 请求
+ */
+function is_ajax()
+{
+	return isset($_SERVER['HTTP_X_REQUESTED_WITH'])
+		&& 'xmlhttprequest' === strtolower($_SERVER['HTTP_X_REQUESTED_WITH']);
+}
+
+/**
+ * 返回 Array 结构.
+ *
+ * @param mixed $message
+ * @param mixed $status
+ * @param mixed $data
+ */
+function cola_data($message = '', $status = 0, $data = [])
+{
+	return ['status' => $status, 'message' => $message, 'data' => $data];
+}
+
+/**
+ * 输出数据到客户端.
+ *
+ * @param mixed      $message
+ * @param mixed      $status
+ * @param null|mixed $data
+ * @param mixed      $type
+ */
+function cola_return($message = '', $status = 0, $data = null, $type = 'JSON')
+{
+	switch (strtoupper($type)) {
+		case 'XML':
+			header('Content-Type:text/xml; charset=utf-8');
+			exit(xml_encode(cola_data($message, $status, $data)));
+			break;
+		case 'EVAL':
+			header('Content-Type:text/html; charset=utf-8');
+			exit($data);
+			break;
+		case 'JSON':
+		default:
+			header('Content-Type:text/html; charset=utf-8');
+			exit(json_encode(cola_data($message, $status, $data)));
+			break;
+	}
+}
+
+/**
+ * 获取客户端IP地址
+ *
+ * @return string
+ */
+function get_client_ip()
+{
+	$ip = '127.0.0.1';
+
+	// 检查代理IP
+	if (isset($_SERVER['HTTP_CLIENT_IP']) && filter_var($_SERVER['HTTP_CLIENT_IP'], FILTER_VALIDATE_IP)) {
+		$ip = $_SERVER['HTTP_CLIENT_IP'];
+	} elseif (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+		// 处理多个代理的情况，取第一个有效IP
+		$ips = explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']);
+		foreach ($ips as $proxyIp) {
+			$proxyIp = trim($proxyIp);
+			if (filter_var($proxyIp, FILTER_VALIDATE_IP)) {
+				$ip = $proxyIp;
+				break;
+			}
+		}
+	} elseif (isset($_SERVER['HTTP_X_FORWARDED']) && filter_var($_SERVER['HTTP_X_FORWARDED'], FILTER_VALIDATE_IP)) {
+		$ip = $_SERVER['HTTP_X_FORWARDED'];
+	} elseif (isset($_SERVER['HTTP_FORWARDED_FOR']) && filter_var($_SERVER['HTTP_FORWARDED_FOR'], FILTER_VALIDATE_IP)) {
+		$ip = $_SERVER['HTTP_FORWARDED_FOR'];
+	} elseif (isset($_SERVER['HTTP_FORWARDED']) && filter_var($_SERVER['HTTP_FORWARDED'], FILTER_VALIDATE_IP)) {
+		$ip = $_SERVER['HTTP_FORWARDED'];
+	} elseif (isset($_SERVER['REMOTE_ADDR']) && filter_var($_SERVER['REMOTE_ADDR'], FILTER_VALIDATE_IP)) {
+		$ip = $_SERVER['REMOTE_ADDR'];
+	}
+
+	return $ip;
+}
+
+/**
+ * 生成图片验证码
+ *
+ * @param string $id
+ * @param array  $config
+ */
+function cola_verify($id = '', $config = [])
+{
+	$verfiy = new Verify($config);
+	$verfiy->entry($id);
+}
+
+/**
+ * 核对验证码
+ *
+ * @param string $code
+ * @param string $id
+ */
+function cola_verify_check($code = '', $id = '')
+{
+	$verfiy = new Verify();
+
+	return $verfiy->check($code, $id);
 }

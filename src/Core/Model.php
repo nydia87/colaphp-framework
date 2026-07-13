@@ -2,7 +2,6 @@
 /**
  * @author: nydia87 <349196713@qq.com>
  */
-
 namespace ColaPHP\Framework\Core;
 
 use ColaPHP\Db\DbManager;
@@ -30,7 +29,7 @@ class Model
 	public function db($index, $config = [])
 	{
 		static $_db = [];
-		if (! isset($_db[$index])) { // 创建并切换
+		if (!isset($_db[$index])) { // 创建并切换
 			$manager = new DbManager($config);
 			$_db[$index] = $manager->make();
 			$this->db = $_db[$index];

@@ -2,7 +2,6 @@
 /**
  * @author: nydia87 <349196713@qq.com>
  */
-
 namespace ColaPHP\Framework\Utils\Image;
 
 class Encoder
@@ -40,7 +39,7 @@ class Encoder
 		$GIF_blu,
 		$GIF_mod
 	) {
-		if (! is_array($GIF_src)) {
+		if (!is_array($GIF_src)) {
 			printf('%s: %s', $this->VER, $this->ERR['ERR00']);
 			exit(0);
 		}

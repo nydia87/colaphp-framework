@@ -2,7 +2,6 @@
 /**
  * @author: nydia87 <349196713@qq.com>
  */
-
 namespace ColaPHP\Framework\Core;
 
 class Dispatcher
@@ -30,7 +29,7 @@ class Dispatcher
 	 */
 	private static function getModule(string $var, array $config): string
 	{
-		$module = (! empty($_GET[$var]) ? $_GET[$var] : $config['default_module']);
+		$module = (!empty($_GET[$var]) ? $_GET[$var] : $config['default_module']);
 		unset($_GET[$var]);
 		// 智能识别方式 /user_type/index/
 		$module = ucfirst(parse_name(strtolower($module), 1));
@@ -43,7 +42,7 @@ class Dispatcher
 	 */
 	private static function getAction(string $var, array $config): string
 	{
-		$action = (! empty($_GET[$var]) ? $_GET[$var] : $config['default_action']);
+		$action = (!empty($_GET[$var]) ? $_GET[$var] : $config['default_action']);
 		unset($_POST[$var],$_GET[$var]);
 
 		return strip_tags($action);
@@ -54,7 +53,7 @@ class Dispatcher
 	 */
 	private static function getGroup(string $var, array $config): string
 	{
-		$group = (! empty($_GET[$var]) ? $_GET[$var] : $config['default_group']);
+		$group = (!empty($_GET[$var]) ? $_GET[$var] : $config['default_group']);
 		unset($_GET[$var]);
 
 		return strip_tags(strtolower($group));
@@ -77,7 +76,7 @@ class Dispatcher
 	 */
 	private static function extractPathInfo(array $config): void
 	{
-		if (! empty($_GET[$config['var_pathinfo']])) {
+		if (!empty($_GET[$config['var_pathinfo']])) {
 			$_SERVER['PATH_INFO'] = $_GET[$config['var_pathinfo']];
 			unset($_GET[$config['var_pathinfo']]);
 
@@ -87,7 +86,7 @@ class Dispatcher
 		if (empty($_SERVER['PATH_INFO'])) {
 			$types = explode(',', $config['url_pathinfo_fetch']);
 			foreach ($types as $type) {
-				if (! empty($_SERVER[$type])) {
+				if (!empty($_SERVER[$type])) {
 					$_SERVER['PATH_INFO'] = static::stripScriptName($_SERVER[$type]);
 					break;
 				}
@@ -116,17 +115,17 @@ class Dispatcher
 
 		$var = [];
 
-		if (! isset($_GET[$config['var_group']]) && ! empty($paths)) {
+		if (!isset($_GET[$config['var_group']]) && !empty($paths)) {
 			$var[$config['var_group']] = in_array($paths[0], $config['default_group_list']) ? array_shift($paths) : '';
 		}
 
-		if (! isset($_GET[$config['var_module']])) {
-			$var[$config['var_module']] = ! empty($paths) ? array_shift($paths) : '';
+		if (!isset($_GET[$config['var_module']])) {
+			$var[$config['var_module']] = !empty($paths) ? array_shift($paths) : '';
 		}
 
-		$var[$config['var_action']] = ! empty($paths) ? array_shift($paths) : '';
+		$var[$config['var_action']] = !empty($paths) ? array_shift($paths) : '';
 
-		if (! empty($paths)) {
+		if (!empty($paths)) {
 			$deprEscaped = preg_quote($depr, '@');
 			preg_replace_callback('@(\w+)' . $deprEscaped . '([^' . $deprEscaped . '\/]+)@', function ($res) use (&$var) { $var[$res[1]] = $res[2]; }, implode($depr, $paths));
 		}

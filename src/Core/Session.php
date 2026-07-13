@@ -2,7 +2,6 @@
 /**
  * @author: nydia87 <349196713@qq.com>
  */
-
 namespace ColaPHP\Framework\Core;
 
 class Session
@@ -67,7 +66,7 @@ class Session
 		}
 
 		// 启动session
-		if (! empty($config['auto_start']) && PHP_SESSION_ACTIVE != session_status()) {
+		if (!empty($config['auto_start']) && PHP_SESSION_ACTIVE != session_status()) {
 			ini_set('session.auto_start', 0);
 			$isDoStart = true;
 		}
@@ -78,7 +77,7 @@ class Session
 
 		if (isset($config['var_session_id'], $_REQUEST[$config['var_session_id']])) {
 			session_id($_REQUEST[$config['var_session_id']]);
-		} elseif (isset($config['id']) && ! empty($config['id'])) {
+		} elseif (isset($config['id']) && !empty($config['id'])) {
 			session_id($config['id']);
 		}
 
@@ -119,10 +118,10 @@ class Session
 			session_cache_expire($config['cache_expire']);
 		}
 
-		if (! empty($config['type'])) {
+		if (!empty($config['type'])) {
 			$class = '\ColaPHP\Framework\Driver\Session\\' . ucwords($config['type']);
 
-			if (! class_exists($class) || ! session_set_save_handler(new $class($config))) {
+			if (!class_exists($class) || !session_set_save_handler(new $class($config))) {
 				halt('session error:' . $config['type']);
 			}
 		}
@@ -164,7 +163,7 @@ class Session
 	{
 		empty($this->init) && $this->boot();
 
-		$prefix = ! is_null($prefix) ? $prefix : $this->prefix;
+		$prefix = !is_null($prefix) ? $prefix : $this->prefix;
 
 		if (strpos($name, '.')) {
 			// 二维数组赋值
@@ -193,9 +192,9 @@ class Session
 	{
 		empty($this->init) && $this->boot();
 
-		$prefix = ! is_null($prefix) ? $prefix : $this->prefix;
+		$prefix = !is_null($prefix) ? $prefix : $this->prefix;
 
-		$value = $prefix ? (! empty($_SESSION[$prefix]) ? $_SESSION[$prefix] : []) : $_SESSION;
+		$value = $prefix ? (!empty($_SESSION[$prefix]) ? $_SESSION[$prefix] : []) : $_SESSION;
 
 		if ('' != $name) {
 			$name = explode('.', $name);
@@ -242,7 +241,7 @@ class Session
 	{
 		$this->set($name, $value);
 
-		if (! $this->has('__flash__.__time__')) {
+		if (!$this->has('__flash__.__time__')) {
 			$this->set('__flash__.__time__', $_SERVER['REQUEST_TIME_FLOAT']);
 		}
 
@@ -254,13 +253,13 @@ class Session
 	 */
 	public function flush()
 	{
-		if (! $this->init) {
+		if (!$this->init) {
 			return;
 		}
 
 		$item = $this->get('__flash__');
 
-		if (! empty($item)) {
+		if (!empty($item)) {
 			$time = $item['__time__'];
 
 			if ($_SERVER['REQUEST_TIME_FLOAT'] > $time) {
@@ -281,7 +280,7 @@ class Session
 	{
 		empty($this->init) && $this->boot();
 
-		$prefix = ! is_null($prefix) ? $prefix : $this->prefix;
+		$prefix = !is_null($prefix) ? $prefix : $this->prefix;
 
 		if (is_array($name)) {
 			foreach ($name as $key) {
@@ -311,7 +310,7 @@ class Session
 	public function clear($prefix = null)
 	{
 		empty($this->init) && $this->boot();
-		$prefix = ! is_null($prefix) ? $prefix : $this->prefix;
+		$prefix = !is_null($prefix) ? $prefix : $this->prefix;
 
 		if ($prefix) {
 			unset($_SESSION[$prefix]);
@@ -330,13 +329,13 @@ class Session
 	{
 		empty($this->init) && $this->boot();
 
-		$prefix = ! is_null($prefix) ? $prefix : $this->prefix;
-		$value = $prefix ? (! empty($_SESSION[$prefix]) ? $_SESSION[$prefix] : []) : $_SESSION;
+		$prefix = !is_null($prefix) ? $prefix : $this->prefix;
+		$value = $prefix ? (!empty($_SESSION[$prefix]) ? $_SESSION[$prefix] : []) : $_SESSION;
 
 		$name = explode('.', $name);
 
 		foreach ($name as $val) {
-			if (! isset($value[$val])) {
+			if (!isset($value[$val])) {
 				return false;
 			}
 			$value = $value[$val];
@@ -379,7 +378,7 @@ class Session
 	 */
 	public function destroy()
 	{
-		if (! empty($_SESSION)) {
+		if (!empty($_SESSION)) {
 			$_SESSION = [];
 		}
 

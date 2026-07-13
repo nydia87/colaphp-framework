@@ -2,7 +2,6 @@
 /**
  * @author: nydia87 <349196713@qq.com>
  */
-
 namespace ColaPHP\Framework\Driver;
 
 class RedisConnect
@@ -15,7 +14,7 @@ class RedisConnect
 
 	public function init($config = [])
 	{
-		if (! extension_loaded('redis')) {
+		if (!extension_loaded('redis')) {
 			halt('extension not support: redis');
 		}
 

@@ -2,7 +2,6 @@
 /**
  * @author: nydia87 <349196713@qq.com>
  */
-
 namespace ColaPHP\Framework\Driver\Log;
 
 class File
@@ -30,20 +29,20 @@ class File
 		$destination = $this->getMasterLogFile();
 
 		$path = dirname($destination);
-		! is_dir($path) && mkdir($path, 0755, true);
+		!is_dir($path) && mkdir($path, 0755, true);
 
 		$info = [];
 
 		foreach ($log as $type => $val) {
 			foreach ($val as $msg) {
-				if (! is_string($msg)) {
+				if (!is_string($msg)) {
 					$msg = var_export($msg, true);
 				}
 
 				$info[$type][] = $this->config['json'] ? $msg : '[ ' . $type . ' ] ' . $msg;
 			}
 
-			if (! $this->config['json'] && in_array($type, $this->config['apart_level'])) {
+			if (!$this->config['json'] && in_array($type, $this->config['apart_level'])) {
 				// 独立记录的日志级别
 				$filename = $this->getApartLevelFile($path, $type);
 

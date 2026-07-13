@@ -2,7 +2,6 @@
 /**
  * @author: nydia87 <349196713@qq.com>
  */
-
 namespace ColaPHP\Framework\Core;
 
 class Config
@@ -94,7 +93,7 @@ class Config
 		}
 		if (is_array($name)) {
 			// 批量设置
-			if (! empty($value)) {
+			if (!empty($value)) {
 				if (isset(self::$config[$value])) {
 					$result = array_merge(self::$config[$value], $name);
 				} else {

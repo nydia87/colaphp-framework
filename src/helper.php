@@ -10,7 +10,7 @@ const DS = DIRECTORY_SEPARATOR;
 define('ROOT_PATH', dirname(__FILE__, 5) . DS);
 define('COLAPHP_PATH', dirname(__FILE__) . DS);
 
-if (! is_file(COLAPHP_PATH . 'helper.php')) {
+if (!is_file(COLAPHP_PATH . 'helper.php')) {
 	exit('Error: invalid path : `' . COLAPHP_PATH . '`');
 }
 
@@ -24,16 +24,16 @@ const CACHE_PATH = RUNTIME_PATH . 'cache' . DS;
 function app_init()
 {
 	// Runtime
-	if (! is_dir(RUNTIME_PATH)) {
+	if (!is_dir(RUNTIME_PATH)) {
 		@mkdir(RUNTIME_PATH, 0755);
-	} elseif (! is_writeable(RUNTIME_PATH)) {
+	} elseif (!is_writeable(RUNTIME_PATH)) {
 		header('Content-Type:text/html; charset=utf-8');
 		exit('目录 [ ' . RUNTIME_PATH . ' ] 不可写！');
 	}
-	if (! is_dir(LOG_PATH)) {
+	if (!is_dir(LOG_PATH)) {
 		@mkdir(LOG_PATH, 0755);
 	}
-	if (! is_dir(CACHE_PATH)) {
+	if (!is_dir(CACHE_PATH)) {
 		@mkdir(CACHE_PATH, 0755);
 	}
 

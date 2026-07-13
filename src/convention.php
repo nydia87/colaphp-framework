@@ -2,7 +2,7 @@
 /**
  * @author: nydia87 <349196713@qq.com>
  */
-if (! defined('COLAPHP_PATH')) {
+if (!defined('COLAPHP_PATH')) {
 	exit;
 }
 

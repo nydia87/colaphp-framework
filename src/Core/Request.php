@@ -2,7 +2,6 @@
 /**
  * @author: nydia87 <349196713@qq.com>
  */
-
 namespace ColaPHP\Framework\Core;
 
 use ColaPHP\Framework\Utils\Upload;
@@ -41,7 +40,7 @@ class Request
 
 	public function method()
 	{
-		if (! $this->method) {
+		if (!$this->method) {
 			if ($this->server('HTTP_X_HTTP_METHOD_OVERRIDE')) {
 				$this->method = strtoupper($this->server('HTTP_X_HTTP_METHOD_OVERRIDE'));
 			} else {
@@ -105,7 +104,7 @@ class Request
 	public function post($name = '')
 	{
 		if (empty($this->post)) {
-			$this->post = ! empty($_POST) ? $_POST : $this->getInputData($this->input);
+			$this->post = !empty($_POST) ? $_POST : $this->getInputData($this->input);
 		}
 
 		return $this->input($this->post, $name);
@@ -127,7 +126,7 @@ class Request
 		}
 
 		$files = $this->file;
-		if (! empty($files)) {
+		if (!empty($files)) {
 			if (strpos($name, '.')) {
 				[$name, $sub] = explode('.', $name);
 			}

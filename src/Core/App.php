@@ -2,7 +2,6 @@
 /**
  * @author: nydia87 <349196713@qq.com>
  */
-
 namespace ColaPHP\Framework\Core;
 
 class App
@@ -30,7 +29,7 @@ class App
 	 */
 	private static function exec(): void
 	{
-		if (! preg_match('/^[A-Za-z_0-9]+$/', MODULE_NAME)) {
+		if (!preg_match('/^[A-Za-z_0-9]+$/', MODULE_NAME)) {
 			$module = false;
 		} else {
 			$module = import(GROUP_NAME . '/controller/' . MODULE_NAME);
@@ -38,7 +37,7 @@ class App
 
 		$module = $module ?: import(GROUP_NAME . '/controller/Error');
 
-		if (! $module) {
+		if (!$module) {
 			halt('class not exists: ' . GROUP_NAME . '~' . MODULE_NAME);
 		}
 

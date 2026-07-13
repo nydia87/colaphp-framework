@@ -2,7 +2,6 @@
 /**
  * @author: nydia87 <349196713@qq.com>
  */
-
 namespace ColaPHP\Framework\Core;
 
 class Env
@@ -69,7 +68,7 @@ class Env
 			$result = true;
 		}
 
-		if (! isset(self::$data[$name])) {
+		if (!isset(self::$data[$name])) {
 			self::$data[$name] = $result;
 		}
 

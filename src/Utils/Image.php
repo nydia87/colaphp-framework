@@ -2,7 +2,6 @@
 /**
  * @author: nydia87 <349196713@qq.com>
  */
-
 namespace ColaPHP\Framework\Utils;
 
 use ColaPHP\Framework\Utils\Image\Gif;
@@ -121,7 +120,7 @@ class Image
 		if (is_string($file)) {
 			$file = new \SplFileInfo($file);
 		}
-		if (! $file->isFile()) {
+		if (!$file->isFile()) {
 			throw new \RuntimeException('image file not exist');
 		}
 
@@ -151,7 +150,7 @@ class Image
 			// JPEG图像设置隔行扫描
 			imageinterlace($this->im, $interlace);
 			imagejpeg($this->im, $pathname, $quality);
-		} elseif ('gif' == $type && ! empty($this->gif)) {
+		} elseif ('gif' == $type && !empty($this->gif)) {
 			$this->gif->save($pathname);
 		} elseif ('png' == $type) {
 			// 设定保存完整的 alpha 通道信息
@@ -229,7 +228,7 @@ class Image
 			$img = imagerotate($this->im, -$degrees, imagecolorallocatealpha($this->im, 0, 0, 0, 127));
 			imagedestroy($this->im);
 			$this->im = $img;
-		} while (! empty($this->gif) && $this->gifNext());
+		} while (!empty($this->gif) && $this->gifNext());
 
 		$this->info['width'] = imagesx($this->im);
 		$this->info['height'] = imagesy($this->im);
@@ -270,7 +269,7 @@ class Image
 
 			imagedestroy($this->im);
 			$this->im = $img;
-		} while (! empty($this->gif) && $this->gifNext());
+		} while (!empty($this->gif) && $this->gifNext());
 
 		return $this;
 	}
@@ -303,7 +302,7 @@ class Image
 			imagedestroy($this->im); // 销毁原图
 			// 设置新图像
 			$this->im = $img;
-		} while (! empty($this->gif) && $this->gifNext());
+		} while (!empty($this->gif) && $this->gifNext());
 		$this->info['width'] = (int) $width;
 		$this->info['height'] = (int) $height;
 
@@ -393,7 +392,7 @@ class Image
 					imagecopyresampled($img, $this->im, $posx, $posy, $x, $y, $neww, $newh, $w, $h);
 					imagedestroy($this->im); // 销毁原图
 					$this->im = $img;
-				} while (! empty($this->gif) && $this->gifNext());
+				} while (!empty($this->gif) && $this->gifNext());
 				$this->info['width'] = (int) $width;
 				$this->info['height'] = (int) $height;
 
@@ -422,7 +421,7 @@ class Image
 	 */
 	public function water($source, $locate = self::WATER_SOUTHEAST, $alpha = 100)
 	{
-		if (! is_file($source)) {
+		if (!is_file($source)) {
 			throw new \RuntimeException('水印图像不存在');
 		}
 		// 获取水印图像信息
@@ -500,7 +499,7 @@ class Image
 			imagecopymerge($this->im, $src, $x, $y, 0, 0, $info[0], $info[1], $alpha);
 			// 销毁零时图片资源
 			imagedestroy($src);
-		} while (! empty($this->gif) && $this->gifNext());
+		} while (!empty($this->gif) && $this->gifNext());
 		// 销毁水印资源
 		imagedestroy($water);
 
@@ -524,7 +523,7 @@ class Image
 	 */
 	public function text($text, $font, $size, $color = '#00000000', $locate = self::WATER_SOUTHEAST, $offset = 0, $angle = 0)
 	{
-		if (! is_file($font)) {
+		if (!is_file($font)) {
 			throw new \RuntimeException("不存在的字体文件：{$font}");
 		}
 		// 获取文字信息
@@ -605,14 +604,14 @@ class Image
 			if (empty($color[3]) || $color[3] > 127) {
 				$color[3] = 0;
 			}
-		} elseif (! is_array($color)) {
+		} elseif (!is_array($color)) {
 			throw new \RuntimeException('错误的颜色值');
 		}
 		do {
 			// 写入文字
 			$col = imagecolorallocatealpha($this->im, $color[0], $color[1], $color[2], $color[3]);
 			imagettftext($this->im, $size, $angle, $x + $ox, $y + $oy, $col, $font, $text);
-		} while (! empty($this->gif) && $this->gifNext());
+		} while (!empty($this->gif) && $this->gifNext());
 
 		return $this;
 	}

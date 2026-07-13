@@ -2,7 +2,6 @@
 /**
  * @author: nydia87 <349196713@qq.com>
  */
-
 namespace ColaPHP\Framework\Core;
 
 use ColaPHP\Framework\Driver\Log\File;
@@ -104,7 +103,7 @@ class Log
 
 	protected function log($level, $message, array $context = [])
 	{
-		if (is_string($message) && ! empty($context)) {
+		if (is_string($message) && !empty($context)) {
 			$replace = [];
 			foreach ($context as $key => $val) {
 				$replace['{' . $key . '}'] = $val;

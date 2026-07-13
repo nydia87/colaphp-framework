@@ -2,7 +2,6 @@
 /**
  * @author: nydia87 <349196713@qq.com>
  */
-
 namespace ColaPHP\Framework\Core;
 
 class Cache
@@ -15,7 +14,7 @@ class Cache
 	{
 		$config = config(Config::PREFIX_CACHE);
 		$class = '\ColaPHP\Framework\Driver\Cache\\' . ucwords($config['type']);
-		if (! class_exists($class)) {
+		if (!class_exists($class)) {
 			halt('cache error: ' . $config['type']);
 		}
 

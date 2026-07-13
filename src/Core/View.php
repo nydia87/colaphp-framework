@@ -2,7 +2,6 @@
 /**
  * @author: nydia87 <349196713@qq.com>
  */
-
 namespace ColaPHP\Framework\Core;
 
 class View
@@ -57,7 +56,7 @@ class View
 	{
 		$module = MODULE_NAME;
 		$action = ACTION_NAME;
-		if (! empty($templateFile)) {
+		if (!empty($templateFile)) {
 			$names = explode(':', $templateFile);
 			if (2 == count($names)) {
 				$module = ucfirst($names[0]);
@@ -69,7 +68,7 @@ class View
 		$file = sprintf('/%s/view/%s/%s.php', GROUP_NAME, $module, $action);
 		$filepath = APP_PATH . $file;
 		// 模板文件不存在直接返回
-		if (! is_file($filepath)) {
+		if (!is_file($filepath)) {
 			halt('tpl not exists: ' . $file);
 		}
 		// 页面缓存
