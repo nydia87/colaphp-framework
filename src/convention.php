@@ -41,11 +41,11 @@ return [
 	'session' => [
 		'id' => '',
 		'var_session_id' => '',
-		'prefix' => 'cola::session::',
+		'prefix' => 'ColaPHP_SESSION',
 		'auto_start' => true,
 		'httponly' => true,
 		'secure' => false,
-		'expire' => 300,
+		'expire' => 1800,
 		'type' => '', // 留空(原生) | redis
 		'redis_config' => [],
 	],

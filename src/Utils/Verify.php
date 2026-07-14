@@ -95,6 +95,11 @@ class Verify
 		if ($sessionId) {
 			session_id($sessionId);
 		}
+
+		if(!isset($_SESSION[$this->_prefix])){
+			return false;
+		}
+		
 		$secode = $_SESSION[$this->_prefix][$key];
 
 		if (empty($code) || empty($secode)) {
